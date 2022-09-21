@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/index.css">
+    <!-- ZUI 标准版压缩后的 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/zui/1.10.0/css/zui.min.css">
+    <!-- ZUI Javascript 依赖 jQuery -->
+    <script src="//cdn.bootcss.com/zui/1.10.0/lib/jquery/jquery.js"></script>
+    <!-- ZUI 标准版压缩后的 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/zui/1.10.0/js/zui.min.js"></script>
+    <title th:text="${now_user.getPetName()}"></title>
+    <script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script>
+
+
+</head>
+<body>
+<!--导航-->
+<nav class="navbar navbar-collapse" role="navigation">
+    <div class="container-fluid">
+        <!-- 导航头部 -->
+        <div class="navbar-header">
+            <a th:href="@{/}"><img th:width="40px" th:high="40px" src="../img/hutao_hai.gif" alt="Blog"/></a>
+        </div>
+        <!-- 导航项目 -->
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            <ul class="nav nav-tabs">
+                <li class="active"><a th:href="@{/}"><i class="icon icon-home"></i>首页</a></li>
+                <li><a th:href="@{/article/allarticle}"><i class="icon icon-list-alt"></i>博客 <span
+                        class="label label-badge label-success"></span></a></li>
+                <li><a href="your/noce/url">动态 <span class="label label-badge label-success"></span></a></li>
+                <li><a href="your/noce/url">空间相册 <span class="label label-badge label-success"></span></a></li>
+                <li><a href="https://www.openzui.com/">前端库 <span class="label label-badge label-success"></span></a></li>
+                <li><a data-toggle="dropdown" href="">更多<i class="icon icon-list-ul"><span class="caret"></span></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="your/nice/url">任务</a></li>
+                        <li><a href="your/nice/url">bug</a></li>
+                        <li><a href="your/nice/url">问题</a></li>
+                        <li><a th:href="@{/page/leimu}">蕾姆🥰</a></li>
+                    </ul>
+                <li><a href="https://blog.csdn.net/m0_51390535?type=blog"><i class="icon icon-gift"></i>请Roydon喝奶茶 <span
+                        class="label label-badge label-success"></span></a></li>
+                </li><!-- 导航中的表单 -->
+                <form class="navbar-form navbar-left" role="search" th:action="@{/article/querylike}">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="搜索" name="title">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索博文</button>
+                </form>
+                <!-- 右侧的导航项目 -->
+                <ul class="nav navbar-nav navbar-right">
+                    <template v-else></template>
+                    <li th:text="${now_user.getPetName()}"><i class="icon icon-user"></i></li>
+                    <li class="dropdown">
+                        <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown">探索 <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="your/nice/url">Java</a></li>
+                            <li><a href="your/nice/url">SpringBoot</a></li>
+                            <li><a href="your/nice/url">python</a></li>
+                            <li><a href="your/nice/url">HTML5</a></li>
+                            <li><a href="your/nice/url">css3</a></li>
+                            <li><a href="your/nice/url">Javascript</a></li>
+                            <li class="divider"></li>
+                            <li><a href="your/nice/url">探索宇宙</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/article/toeditor}">写文章=></a></li>
+                </ul>
+            </ul>
+        </div><!-- END .navbar-collapse -->
+    </div>
+</nav>
+<div class="slide-box">
+    <div class="banner-box"></div>
+    <button class="slide-left-btn material-icons">arrow_back_ios</button>
+    <button class="slide-right-btn material-icons">arrow_forward_ios</button>
+    <div class="pagination-box"></div>
+</div>
+
+<div class="slide-box">
+    <ul>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+        <li>23252332534egsbabreh</li>
+
+    </ul>
+</div>
+
+
+<header>
+    <script src="https://myhkw.cn/player/js/jquery.min.js" type="text/javascript"></script>
+</header>
+<script src="https://myhkw.cn/api/player/demo" id="myhk" key="demo" skin="player" lr="l" m="1"></script>
+<script type="text/javascript" src="../js/index.js"></script>
+
+</body>
+<script>
+
+
+
+    // function getMyCookie(key) {
+    //     var val = "";
+    //     // 对cookie操作
+    //     var cookies = document.cookie;
+    //     cookies = cookies.replace(/\s/, "");
+    //     var cookie_array = cookies.split(";");
+    //
+    //     for (i = 0; i < cookie_array.length; i++) {
+    //         // yh_mch=lilei
+    //         var cookie = cookie_array[i];
+    //
+    //         if (cookie == key) {
+    //             val = cookie.split("-")[0];
+    //             // console.log(cookie)
+    //             // console.log(val)
+    //         }
+    //     }
+    //     return val;
+    // }
+    //
+    // $.ajax({
+    //     url: "/login",
+    //     async: false,
+    //     type: "get",
+    //     dataType: "json",
+    //     success: function (data) {
+    //         const yh_mch = getMyCookie("nowLoginUser"); //cookies中对象名
+    //         $("#index-login").text(decodeURIComponent(yh_mch));
+    //     }
+    // })
+</script>
+
+</html>

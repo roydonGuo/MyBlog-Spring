@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/register.css">
+    <title>Register</title>
+</head>
+
+<body>
+<div class="box">
+    <div class="left"></div>
+    <div class="right">
+        <h4>注 册</h4>
+        <form th:action="@{/page/adduser}" method="post" th:object="${userModel.user}">
+            <input class="acc" type="text" placeholder="用户名" name="pet_name" th:value="*{petName}">
+            <input class="acc" type="password" placeholder="密码" name="password" th:value="*{password}">
+            <input class="submit" type="submit" value="register">
+        </form>
+        <div class="fn1">
+            <p style="color:red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+        </div>
+        <div class="fn2">
+            <a th:href="@{login}">去登录</a>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

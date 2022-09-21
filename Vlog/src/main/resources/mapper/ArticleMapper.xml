@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace：命名空间，指向的就是对应接口的全限定名-->
+<mapper namespace="edu.zut.vlog.mapper.ArticleMapper">
+    <update id="updateArticle">
+        update article
+        <set>
+            <if test="title!=null">
+                title=#{title},
+            </if>
+            <if test="content!=null">
+                content=#{content},
+            </if>
+            <if test="date!=null">
+                date=#{date},
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="queryAllArticles" resultMap="ArticleList">
+        select a.*, u.*, t.*
+        from article a
+                 join users u on a.authorid = u.id
+                 left outer join article_tag t on a.id = t.article_id
+--                  left outer join comment c on a.id = c.article_id
+
+    </select>
+    <resultMap id="ArticleList" type="article">
+        <id column="id" property="id"/>
+        <result column="authorid" property="authorId"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="date" property="date"/>
+        <association property="user" javaType="users">
+            <id column="id" property="id"/>
+            <result column="pet_name" property="petName"/>
+            <result column="headportrait" property="headPortrait"/>
+        </association>
+        <collection property="articleTagList" ofType="articleTag">
+            <id column="tag_id" property="tagId"/>
+            <result column="article_id" property="articleId"/>
+            <result column="tag_content" property="tag"/>
+        </collection>
+        <!--        <collection property="commentList" ofType="comment">-->
+        <!--            <id column="comment_id" property="commentId"/>-->
+        <!--            <result column="article_id" property="articleId"/>-->
+        <!--            <result column="user_id" property="userId"/>-->
+        <!--            <result column="comment_content" property="content"/>-->
+        <!--            <result column="create_time" property="createTime"/>-->
+
+        <!--        </collection>-->
+    </resultMap>
+    <resultMap id="allArticle" type="article">
+        <id column="id" property="id"/>
+        <result column="authorid" property="authorId"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="date" property="date"/>
+        <association property="user" javaType="users">
+            <id column="id" property="id"/>
+            <result column="pet_name" property="petName"/>
+            <result column="headportrait" property="headPortrait"/>
+        </association>
+        <!--        <collection property="commentList" ofType="comment">-->
+        <!--            <id column="id" property="id"/>-->
+        <!--            <result column="comment_content" property="content"/>-->
+        <!--        </collection>-->
+    </resultMap>
+
+    <insert id="addArticle">
+        insert into article
+            (authorid, title, content)
+        values (#{authorid}, #{title}, #{content})
+    </insert>
+
+    <select id="getArticleById" resultType="article">
+        select *
+        from article
+        where id = #{id}
+    </select>
+
+    <delete id="deleteArticleById">
+        delete
+        from article
+        where id = #{id}
+    </delete>
+    <delete id="delAllFavoriteByArticleId">
+        delete
+        from favorite
+        where article_id=#{articleId}
+    </delete>
+    <delete id="delAllArticleTagByArticleId">
+        delete
+        from article_tag
+        where article_id=#{articleId}
+    </delete>
+    <!--根据标题模糊查询文章-->
+    <select id="queryArticleLikeTitle" resultMap="ArticleList">
+        select *
+        from article
+                 join users on users.id = article.authorid
+        left outer join article_tag t on article.id = t.article_id
+        where article.title like concat('%', #{title}, '%')
+
+    </select>
+    <select id="queryAllByAuthorId" resultMap="allArticle">
+        select *
+        from article
+                 join users u on article.authorid = u.id
+        where authorid = #{authorId}
+    </select>
+    <select id="countComment" resultType="java.lang.Integer">
+        select count(*)
+        from comment
+        where article_id = #{articleId}
+    </select>
+    <!--    <select id="weatherUserFavorite" resultType="java.lang.Boolean">-->
+    <!--        select *-->
+    <!--        from favorite-->
+    <!--        where user_id = #{userId}-->
+    <!--          and article_id = #{articleId}-->
+    <!--    </select>-->
+    <select id="weather" resultType="favorite">
+        select *
+        from favorite
+        where user_id = #{userId}
+          and article_id = #{articleId}
+    </select>
+
+    <insert id="addFavorite">
+        insert into favorite (user_id, article_id, create_time)
+        values (#{userId}, #{articleId}, #{createTime});
+    </insert>
+
+    <select id="queryListOrderByDate" resultMap="allArticle">
+        SELECT *
+        from article
+                 join users on article.authorid = users.id
+        ORDER BY date desc
+    </select>
+    <select id="queryByTagLike" resultMap="ArticleList">
+        select a.*, u.*, t.*
+        from article a
+                 join users u on a.authorid = u.id
+                 left outer join article_tag t on a.id = t.article_id
+        where t.tag_content like concat('%', #{tagLike}, '%')
+
+    </select>
+    <select id="fireArticles" resultMap="fireArticle">
+        SELECT *, COUNT(article_id) AS num, a.*, u.*
+        FROM favorite f
+                 left JOIN article a on a.id = f.article_id
+                 join users u on u.id = a.authorid
+        GROUP BY article_id
+        ORDER BY num DESC
+            limit 0,4
+    </select>
+    <resultMap id="fireArticle" type="favorite">
+        <id column="id" property="id"/>
+        <result column="article_id" property="articleId"/>
+        <association property="article" javaType="article">
+            <id column="id" property="id"/>
+            <result column="title" property="title"/>
+            <result column="authorid" property="authorId"/>
+        </association>
+        <association property="user" javaType="users">
+            <id column="id" property="id"/>
+            <result column="pet_name" property="petName"/>
+        </association>
+    </resultMap>
+
+    <insert id="addTag">
+        insert into article_tag (article_id, tag_content)
+        values (#{articleId}, #{tagContent});
+    </insert>
+
+</mapper>

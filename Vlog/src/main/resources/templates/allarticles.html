@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/index.css">
+    <!-- ZUI 标准版压缩后的 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/zui/1.10.0/css/zui.min.css">
+    <!-- ZUI Javascript 依赖 jQuery -->
+    <script src="//cdn.bootcss.com/zui/1.10.0/lib/jquery/jquery.js"></script>
+    <!-- ZUI 标准版压缩后的 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/zui/1.10.0/js/zui.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <title>博客列表</title>
+    <!--    <link rel="stylesheet" th:href="@{/css/index.css}">-->
+    <!--    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>-->
+    <!--    <script th:src="@{/layui/layui.js}"></script>-->
+    <style>
+        a:hover {
+            color: lightpink;
+        }
+    </style>
+
+</head>
+<body>
+<!--导航-->
+<nav class="navbar navbar-collapse" role="navigation">
+    <div class="container-fluid">
+        <!-- 导航头部 -->
+        <div class="navbar-header">
+            <a th:href="@{/}"><img th:width="40px" th:high="40px" src="../img/hutao_hai.gif" alt="Blog"/></a>
+        </div>
+        <!-- 导航项目 -->
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            <ul class="nav nav-tabs">
+                <li class="hvr-grow-shadow"><a th:href="@{/}"><i class="icon icon-home"></i>首页</a></li>
+                <li class="active  hvr-grow-shadow"><a th:href="@{/article/allarticle}"><i
+                        class="icon icon-list-alt"></i>博客
+                    <span
+                            class="label label-badge label-success hvr-grow-shadow"></span></a></li>
+                <li class="hvr-grow-shadow"><a th:href="@{/article/dynamic}">动态 <span
+                        class=" label label-badge label-success"></span></a></li>
+                <li class="hvr-grow-shadow"><a th:href="@{/album/allAlbum}">空间相册 <span
+                        class="label label-badge label-success "></span></a></li>
+                <li class="hvr-grow-shadow"><a href="https://www.openzui.com/">前端库 <span
+                        class="label label-badge label-success  "></span></a></li>
+                <li class="nav-li">
+                    <a data-toggle="dropdown" href="">更多<i class="icon icon-list-ul"><span class="caret"></span></i></a>
+                    <ul class="dropdown-menu dorp-box">
+                        <li><a href="your/nice/url">任务</a></li>
+                        <li><a href="your/nice/url">bug</a></li>
+                        <li><a href="your/nice/url">问题</a></li>
+                        <li><a th:href="@{/page/leimu}">蕾姆🥰</a></li>
+                    </ul>
+                <li class="hvr-grow-shadow"><a target="_blank" href="https://blog.csdn.net/m0_51390535?type=blog"><i
+                        class="icon icon-gift"></i>请Roydon喝奶茶 <span class="label label-badge label-success"></span></a>
+                </li>
+                </li><!-- 导航中的表单 -->
+                <form class="navbar-form navbar-left" role="search" th:action="@{/article/querylike}">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="搜索" name="title">
+                    </div>
+                    <button type="submit" class="btn btn-default hvr-grow-shadow">搜索博文</button>
+                </form>
+                <!-- 右侧的导航项目 -->
+                <ul class="nav navbar-nav navbar-right">
+                    <template v-else></template>
+                    <li class="hvr-grow-shadow" th:if="${now_user}==null"><a th:href="@{/page/login}"><i
+                            class="icon icon-user"></i>登录</a></li>
+                    <li th:if="${now_user}!=null" class="dropdown nav-li" style="align-items: center">
+                        <a th:text="${now_user.getPetName()}" class="dropdown-toggle" data-toggle="dropdown"
+                           th:href="@{/page/my}"><b class="caret"></b></a>
+                        <ul class="dropdown-menu dorp-box" role="menu">
+                            <li><a th:href="@{/article/myArticle}">我的vlog</a></li>
+                            <li><a th:href="@{/page/addAlbum}">创建相册</a></li>
+                            <li><a th:href="@{/album/myAlbum}">我的相册</a></li>
+                            <li class="divider"></li>
+                            <li class="hvr-grow-shadow"><a th:href="@{/}">退出登录</a></li>
+                        </ul>
+
+                    </li>
+
+                    <li class="nav-li">
+                        <a href="" data-toggle="dropdown">探索 <span class="caret"></span></a>
+                        <ul class="dropdown-menu dorp-box">
+                            <li><a href="your/nice/url">Java</a></li>
+                            <li><a href="your/nice/url">SpringBoot</a></li>
+                            <li><a href="your/nice/url">python</a></li>
+                            <li><a href="your/nice/url">HTML5</a></li>
+                            <li><a href="your/nice/url">css3</a></li>
+                            <li><a href="your/nice/url">Javascript</a></li>
+                            <li class="divider"></li>
+                            <li class="hvr-grow-shadow"><a href="your/nice/url">探索宇宙</a></li>
+                        </ul>
+                    </li>
+                    <li class="hvr-grow-shadow" style="background-color: hotpink">
+                        <a th:if="${now_user}!=null" target="_blank" th:href="@{/article/toeditor}">写文章=></a>
+                    </li>
+                    <li><a th:if="${now_user}==null" th:href="@{/article/toeditor}" onclick="alert('请先登录')">写文章=></a>
+                    </li>
+                </ul>
+            </ul>
+        </div><!-- END .navbar-collapse -->
+    </div>
+</nav>
+
+<div style="margin-left: 100px;margin-right: 25%">
+    <div th:each="article :${articleList}" style="background-color: rgba(155, 223, 219, 30%);border-radius:15px;">
+        <hr/>
+        <ul>
+            <div class="pull-right">
+                <a target="_blank" th:href="@{/user/details(userId=${article.getAuthorId()})}">
+                    <img th:src="${article.getUser().getHeadPortrait()}" width="30px" height="30px" class="img-circle">
+                </a>
+                <a target="_blank" color="#ff69b4" style="color: deeppink"
+                   th:href="@{/user/details(userId=${article.getAuthorId()})}"
+                   th:text="${article.getUser().getPetName()}"></a>
+            </div>
+            <li><a target="_blank" th:href="@{/article/detail(id=${article.getId()})}">
+                <h1 th:text="${article.getTitle()}"></h1></a>
+            </li>
+            <a style="color: black" target="_blank" th:href="@{/article/detail(id=${article.getId()})}">
+                <font id="content" th:text="${article.getContent()}"></font></a>
+            <div class="item-footer">
+                <!--            <a href="#" class="text-muted"><i class="icon-comments"></i> 243</a> &nbsp;-->
+                <a href="#" class="text-muted" ><i class="icon-comments"></i>8</a> &nbsp;
+                <span class="text-muted" th:text="${article.getDate()}"></span>
+                <div th:each="tag : ${article.getArticleTagList()}">
+                    <a target="_blank" th:href="@{/article/queryLikeTag(tagLike=${tag.getTag()})}">
+                        <span class="label label-success text-muted  pull-right" th:text="${tag.getTag()}"></span>
+<!--                        <span>&emsp;</span>-->
+                    </a>
+                </div>
+            </div>
+        </ul>
+        <hr/>
+    </div>
+
+
+    <h2 align="center" th:if="${pageNo}==${pages}">
+        <font style="color: hotpink">not have any more~</font></h2>
+    <div align="center">
+        <ul class="pager">
+
+            <li class="previous" th:if="${pageNo}!=1"><a th:href="@{/article/allarticle(pageNo=1)}">首页</a></li>
+            <li class="previous disabled" th:if="${pageNo}==1"><a th:href="@{/article/allarticle(pageNo=1)}">首页</a></li>
+            <li th:if="${pageNo}!=1"><a th:href="@{/article/allarticle(pageNo= ${pageNo}-1)}"><i
+                    class="icon icon-chevron-left"></i></a></li>
+            <li class="previous disabled" th:if="${pageNo}==1"><a th:href="@{/article/allarticle(pageNo= ${pageNo}-1)}"><i
+                    class="icon icon-chevron-left"></i></a></li>
+
+            <!--实现按主观页查询-->
+            <li class="disabled" th:if="${pageNo}==1"><a th:href="@{/article/allarticle(pageNo= ${pageNo}-1)}"><i
+                    class="icon icon-ellipsis-h"></i></a></li>
+            <li th:if="${pageNo}!=1"><a th:href="@{/article/allarticle(pageNo= ${pageNo}-1)}" th:text="${pageNo}-1"></a>
+            </li>
+            <li class="active"><a th:href="@{/article/allarticle(pageNo= ${pageNo})}" th:text="${pageNo}"></a></li>
+            <li th:if="${pageNo}!=${pages}"><a th:href="@{/article/allarticle(pageNo= ${pageNo}+1)}"
+                                               th:text="${pageNo}+1"></a></li>
+            <li class="disabled" th:if="${pageNo}==${pages}"><a th:href="@{/article/allarticle(pageNo= ${pageNo}+1)}"><i
+                    class="icon icon-ellipsis-h"></i></a></li>
+            <!--END-->
+
+            <li th:if="${pageNo}!=${pages}"><a th:href="@{/article/allarticle(pageNo= ${pageNo}+1)}"><i
+                    class="icon icon-chevron-right"></i></a></li>
+            <li class="next disabled" th:if="${pageNo}==${pages}"><a
+                    th:href="@{/article/allarticle(pageNo= ${pageNo}+1)}"><i class="icon icon-chevron-right"></i></a>
+            </li>
+            <li class="next" th:if="${pageNo}!=${pages}"><a th:href="@{/article/allarticle(pageNo=${pages})}">尾页</a>
+            </li>
+            <li class="next disabled" th:if="${pageNo}==${pages}"><a
+                    th:href="@{/article/allarticle(pageNo=${pages})}">尾页</a></li>
+
+        </ul>
+    </div>
+    <div align="center"><span id="pageNo" th:text="'第'+${pageNo}"></span>
+        <span th:text="'/'+${pages}+'页'"></span>
+
+    </div>
+<!--    <div style="position: fixed;top: 300px;margin-left: 70%;margin-right: 10%;background-color: rgba(210, 110, 240, 20%)">-->
+<!--        <div style="margin: 10px;width: 250px" id="DivAB">-->
+<!--            <h3><i class="icon icon-tags"></i>热门文章</h3>-->
+<!--            <ul >-->
+<!--                <li><a th:href="@{/article/}" th:text=""></a><span></li>-->
+<!--            </ul>-->
+
+<!--        </div>-->
+<!--    </div>-->
+    <div style="position: fixed;top: 60px;margin-left: 70%;margin-right: 8%;background-color: rgba(210, 110, 240, 20%)">
+        <div style="margin: 10px;width: 265px" id="DivAB">
+            <h3>📰热门文章</h3>
+            <ul th:each="fire : ${fireArticles}">
+<!--                <li><a th:href="@{/article/detail(id=${fire.getArticleId()})}" th:text="${fire.getArticle().getTitle()}"></a></li>-->
+                <hr/>
+                <div class="pull-right">
+                    <i class="icon icon-user"></i><a target="_blank" color="#ff69b4" style="color: deeppink"
+                       th:href="@{/user/details(userId=${fire.getArticle().getAuthorId()})}"
+                       th:text="${fire.getUser().getPetName()}"></a>
+                </div>
+                <li><a target="_blank" th:href="@{/article/detail(id=${fire.getArticleId()})}" >
+                    🎖️<p class="line-limit-length" th:text="${fire.getArticle().getTitle()}"></p></a>
+                </li>
+            </ul>
+        </div>
+        <div style="margin: 10px;height: 6px;width: 265px;background-color: pink">
+
+        </div >
+        <div style="margin: 10px;width: 265px" id="DivA">
+            <h3><i class="icon icon-tags"></i>全部标签</h3>
+            <a class="label label-badge label-success" th:href="@{/article/SelectByTag(tagContent='java')}">java</a>
+            <a class="label label-badge label-success" th:href="@{/article/SelectByTag(tagContent='springboot')}">springboot</a>
+            <a class="label label-badge label-success" th:href="@{/article/SelectByTag(tagContent='html')}">html</a>
+            <a>css</a>
+            <a>javascript</a>
+
+            <a>mybatis</a>
+            <a>thymleaf</a>
+            <a>tomcat</a>
+            <a>C/C++</a>
+            <a>C#</a>
+        </div>
+    </div>
+    <!--<script th:src="@{/layui/layui.js}"></script>-->
+</div>
+
+
+</body>
+
+
+</html>

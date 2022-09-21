@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${user.getPetName()}"></title>
+    <link rel="stylesheet" href="../css/index.css">
+    <!-- ZUI 标准版压缩后的 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/zui/1.10.0/css/zui.min.css">
+    <!-- ZUI Javascript 依赖 jQuery -->
+    <script src="//cdn.bootcss.com/zui/1.10.0/lib/jquery/jquery.js"></script>
+    <!-- ZUI 标准版压缩后的 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/zui/1.10.0/js/zui.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+    <script th:src="@{/layui/layui.js}"></script>
+</head>
+<body style="background-image: linear-gradient(110.13149366494508deg, rgba(175, 233, 249,1) 5.533854166666667%,rgba(248, 198, 215,1) 96.67968749999999%)">
+<!--导航-->
+<nav class="navbar navbar-collapse" role="navigation">
+    <div class="container-fluid">
+        <!-- 导航头部 -->
+        <div class="navbar-header">
+            <a th:href="@{/}"><img th:width="40px" th:high="40px" src="../img/hutao_hai.gif" alt="Blog"/></a>
+        </div>
+        <!-- 导航项目 -->
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            <ul class="nav nav-tabs">
+                <li class="hvr-grow-shadow"><a th:href="@{/}"><i class="icon icon-home"></i>首页</a></li>
+                <li class="hvr-grow-shadow"><a th:href="@{/article/allarticle}"><i class="icon icon-list-alt"></i>博客
+                    <span class="label label-badge label-success hvr-grow-shadow"></span></a></li>
+                <li class="hvr-grow-shadow"><a th:href="@{/article/dynamic}">动态 <span
+                        class=" label label-badge label-success"></span></a></li>
+                <li class="hvr-grow-shadow"><a th:href="@{/album/allAlbum}">空间相册 <span
+                        class="label label-badge label-success "></span></a></li>
+                <li class="hvr-grow-shadow"><a href="https://www.openzui.com/">前端库 <span
+                        class="label label-badge label-success  "></span></a></li>
+                <li class="nav-li">
+                    <a data-toggle="dropdown" href="">更多<i class="icon icon-list-ul"><span class="caret"></span></i></a>
+                    <ul class="dropdown-menu dorp-box">
+                        <li><a href="your/nice/url">任务</a></li>
+                        <li><a href="your/nice/url">bug</a></li>
+                        <li><a href="your/nice/url">问题</a></li>
+                        <li><a th:href="@{/page/leimu}">蕾姆🥰</a></li>
+                    </ul>
+                <li class="hvr-grow-shadow"><a target="_blank" href="https://blog.csdn.net/m0_51390535?type=blog"><i
+                        class="icon icon-gift"></i>请Roydon喝奶茶 <span class="label label-badge label-success"></span></a>
+                </li>
+                </li><!-- 导航中的表单 -->
+                <form class="navbar-form navbar-left" role="search" th:action="@{/article/querylike}">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="搜索" name="title">
+                    </div>
+                    <button type="submit" class="btn btn-default hvr-grow-shadow">搜索博文</button>
+                </form>
+                <!-- 右侧的导航项目 -->
+                <ul class="nav navbar-nav navbar-right">
+                    <template v-else></template>
+                    <li class="hvr-grow-shadow" th:if="${now_user}==null"><a th:href="@{/page/login}"><i
+                            class="icon icon-user"></i>登录</a></li>
+                    <li th:if="${now_user}!=null" class="dropdown nav-li" style="align-items: center">
+                        <a th:text="${now_user.getPetName()}" class="dropdown-toggle" data-toggle="dropdown"
+                           th:href="@{/page/my}"><b class="caret"></b></a>
+                        <ul class="dropdown-menu dorp-box" role="menu">
+                            <!--                            <li><a th:href="@{/user/details(userId=${now_user.getId()})}"><i class="icon icon-user"></i>个人中心</a>-->
+                            <!--                            </li>-->
+                            <li><a target="_blank" th:href="@{/article/myArticle}">我的vlog</a></li>
+                            <li><a target="_blank" th:href="@{/page/addAlbum}">创建相册</a></li>
+                            <li><a target="_blank" th:href="@{/album/myAlbum}">我的相册</a></li>
+                            <li class="divider"></li>
+                            <li class="hvr-grow-shadow"><a th:href="@{/}">退出登录</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-li">
+                        <a href="" data-toggle="dropdown">探索 <span class="caret"></span></a>
+                        <ul class="dropdown-menu dorp-box">
+                            <li><a href="your/nice/url">Java</a></li>
+                            <li><a href="your/nice/url">SpringBoot</a></li>
+                            <li><a href="your/nice/url">python</a></li>
+                            <li><a href="your/nice/url">HTML5</a></li>
+                            <li><a href="your/nice/url">css3</a></li>
+                            <li><a href="your/nice/url">Javascript</a></li>
+                            <li class="divider"></li>
+                            <li class="hvr-grow-shadow"><a href="your/nice/url">探索宇宙</a></li>
+                        </ul>
+                    </li>
+                    <li class="hvr-grow-shadow" style="background-color: hotpink">
+                        <a th:if="${user}!=null" target="_blank" th:href="@{/article/toeditor}">写文章=></a>
+                    </li>
+                    <li><a th:if="${user}==null" th:href="@{/article/toeditor}" onclick="alert('🙌请先登录哦')">写文章=></a>
+                    </li>
+
+                </ul>
+            </ul>
+        </div><!-- END .navbar-collapse -->
+    </div>
+</nav>
+<div style="width: 200px">
+
+
+</div>
+
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md3">
+            <img style="margin-left: 35%" th:src="${user.getHeadPortrait()}" width="100px" height="100px"
+                 class="img-circle" alt="头像">
+            <h1 align="center" th:text="${user.getPetName()}"></h1>
+            <a target="_blank" href="https://github.com/gewt2333" class="pull-right" title="GitHub"><i
+                    class="icon icon-spin icon-github icon-2x"></i></a>
+            <button class="btn btn-info pull-right" type="button"><i class="icon icon-yen"></i>打赏</button>
+            <button class="btn btn-info pull-right" type="button"><i class="icon icon-comments-alt"></i>私信</button>
+
+            <form>
+                <button class="btn btn-info pull-right" type="button"><i class="icon icon-heart"></i>关注</button>
+            </form>
+            <hr/>
+            <span style="margin-left: 10%" class="label label-badge label-primary pull-left">中原工学院</span>
+            <h4 style="margin-left: 30%" th:text="${user.getInDate()}"></h4>
+        </div>
+
+        <div class="layui-col-md9">
+            <span class="label label-dot label-success"></span>用户简介：
+            <a th:if="${now_user!=null and nowUserId==now_user.getId()}" data-toggle="tooltip"
+               data-tip-class="tooltip-warning" class="pull-right" title="风险操作" target="_blank"
+               th:href="@{/page/updateUser(userId=${user.getId()})}">
+                <i class="icon-pencil"></i> 编辑信息</a>
+            <br>&nbsp;&nbsp;&nbsp;<p th:text="${user.getUserIntroduction()}"></p>
+        </div>
+
+    </div>
+</div>
+
+<div style="height: 5px">
+
+</div>
+
+<!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">-->
+<!--    <legend>信息流 - 滚动加载</legend>-->
+<!--</fieldset>-->
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+    <legend></legend>
+</fieldset>
+
+<div class="layui-container">
+    <div class="layui-row">
+
+        <div class="layui-col-md3">
+            行略定秦地。函谷关有兵守关，不得入。又闻沛公已破咸阳，项羽大怒，使当阳君等击关。
+            行略定秦地。函谷关有兵守关，不得入。又闻沛公已破咸阳，项羽大怒，使当阳君等击关。
+            行略定秦地。函谷关有兵守关，不得入。又闻沛公已破咸阳，项羽大怒，使当阳君等击关。
+            行略定秦地。函谷关有兵守关，不得入。又闻沛公已破咸阳，项羽大怒，使当阳君等击关。
+        </div>
+
+        <div class="layui-col-md9">
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">我的博客</li>
+                    <li>我的相册</li>
+                    <li>博客收藏</li>
+                    <li>评论管理</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show" id="LAY_demo1">
+                        <div th:each="article :${articleList}" style="margin-left: 10px;margin-right: 10px">
+                            <hr/>
+                            <ul>
+                                <div class="pull-right">
+                                    <a th:if="${now_user!=null and nowUserId==now_user.getId()}" data-toggle="tooltip"
+                                       data-tip-class="tooltip-warning" title="风险操作"
+                                       target="_blank"
+                                       th:href="@{/page/update(id=${article.getId()})}">
+                                        <i class="icon-pencil"></i> 编辑</a> &nbsp;
+                                    <a th:if="${now_user!=null and nowUserId==now_user.getId()}" data-toggle="tooltip"
+                                       data-tip-class="tooltip-warning" title="风险操作"
+                                       th:href="@{/article/delArticle(articleId=${article.getId()})}"
+                                       onclick="return del()">
+                                        <i class="icon-remove"></i> 删除</a></div>
+
+                                <li>
+                                    <h2>
+                                        <a target="_blank" th:text="${article.getTitle()}"
+                                           th:href="@{/article/detail(id=${article.getId()})}"></a>
+                                    </h2>
+                                    <!--            <i class="layui-icon-tabs"></i><a target="_blank" style="margin-right: 100px" th:href="@{/page/update(id=${article.getId()})}">编辑</a>-->
+                                </li>
+                                <font class="author" color="black">作者：</font>
+                                <font color="#ff69b4" th:text="${article.getUser().getPetName()}"></font>
+                                <font id="content" th:text="${article.getContent()}"></font>
+                                <div class="item-footer">
+                                    <a href="#" class="text-muted"><i class="icon-comments"></i> 20</a> &nbsp;
+                                    <span class="text-muted" th:text="${article.getDate()}"></span>&nbsp;&nbsp;
+                                    <div>
+                                        <a>
+                                            <span class="label label-success text-muted">Java</span>
+                                            <span class="label label-success text-muted">Js</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </ul>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div th:each="album :${albumList}" style="margin-left: 10px;margin-right: 10px">
+                            <hr/>
+                            <div style="width: 250px; height: 120px; display: inline-block;text-indent:2em;">
+                                <ul>
+                                    <li><a th:href="@{/album/imgs(id=${album.getId()})}">
+                                        <h1 th:text="${album.getTitle()}"></h1></a>
+                                    </li>
+                                    <!--<font class="author" color="black">作者：</font>-->
+                                    <!--<font color="#ff69b4" th:text="${album.getUser().getPetName()}"></font><hr/>-->
+
+                                </ul>
+                                <div>
+                                    <font style="color: lightpink;size: 12px" th:text="${album.getAlbumDescribe()}"></font>
+<!--                                    <h6 th:text="${album.getAlbumDescribe()}"></h6>-->
+                                </div>
+                            </div>
+
+                            <div style="width: 250px; height: 120px; display: inline-block; margin-left: 10px">
+                                <img style="height: 100%" th:src="${album.getCoverImgUrl()}" alt="暂无封面">
+                            </div>
+                            <div>
+                                <a th:if="${now_user!=null and nowUserId==now_user.getId()}"
+                                   th:href="@{/album/deleteAlbum(albumId=${album.getId()})}">⛔删除此相册</a>
+                            </div>
+                            <hr/>
+                        </div>
+
+                    </div>
+                    <div class="layui-tab-item">
+                        <div th:each="favorite :${favoriteList}" style="margin-left: 10px;margin-right: 10px">
+                            <hr/>
+                            <ul>
+                                <div class="pull-right">
+
+                                    <a th:if="${now_user!=null and nowUserId==now_user.getId()}" data-toggle="tooltip"
+                                       data-tip-class="tooltip-warning" title="风险操作"
+                                       th:href="@{/article/delFavorite(userId=${user.getId()},articleId=${favorite.getArticleId()})}"
+                                       onclick="return del()">
+                                        <i class="icon-remove"></i> 取消收藏</a></div>
+                                <li>
+                                    <h2>
+                                        <a target="_blank" th:text="${favorite.getArticle().getTitle()}"
+                                           th:href="@{/article/detail(id=${favorite.getArticleId()})}"></a>
+                                    </h2>
+                                    <!--            <i class="layui-icon-tabs"></i><a target="_blank" style="margin-right: 100px" th:href="@{/page/update(id=${article.getId()})}">编辑</a>-->
+                                </li>
+                                <font class="author" color="black">作者：</font>
+                                <font color="#ff69b4" th:text="${favorite.getUser().getPetName()}"></font>
+                                <font id="content2" th:text="${favorite.getArticle().getContent()}"></font>
+                                <div class="item-footer">
+                                    <a href="#" class="text-muted"><i class="icon-comments"></i> 20</a> &nbsp;
+                                    收藏于<span class="text-muted" th:text="${favorite.getCreateTime()}"></span>&nbsp;&nbsp;
+                                    <div>
+                                        <a>
+                                            <span class="label label-success text-muted">Java</span>
+                                            <span class="label label-success text-muted">Js</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </ul>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">内容4
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script>
+    function del() {
+        if (confirm("确实要删除吗?")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    window.onload = function () {
+        var oBtn = document.querySelector(".nav-li"); //获取一级菜单元素
+        oBtn.onmouseover = function () {
+            // this.style.display="none";
+            this.querySelector('.dorp-box').style.display = "block"
+            //给二级菜单添加阴影
+            this.querySelector('.dorp-box').style.boxShadow = " 0 2px 2px gray"
+        }
+        //鼠标出
+        oBtn.onmouseout = function () {
+            this.querySelector('.dorp-box').style.display = "none"
+            this.querySelector('.dorp-box').style.boxShadow = 'none'
+        }
+
+    }
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+
+        //…
+    });
+    // layui.use('flow', function() {
+    //     var flow = layui.flow;
+    //
+    //     flow.load({
+    //         elem: '#LAY_demo1', //流加载容器
+    //         scrollElem: '#LAY_demo1', //滚动条所在元素，一般不用填
+    //         done: function (page, next) { //执行下一页的回调
+    //
+    //             //模拟数据插入
+    //             setTimeout(function () {
+    //                 var lis = [];
+    //                 //数据请求地址，page，第几页，默认page是从2开始返回
+    //                 $.post('blog/fysj2', {page: page}, function (res) {
+    //                     layui.each(res.data, function (index, item) {
+    //                         //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+    //                         //流加载插入内容部分，根据自己需求更改，这里做的案例，所以就写的比较简单
+    //                         lis.push("<div class='list-group'><a href='#' class='list-group-item' onclick='details(" + item.id + ")'>" +
+    //                             "<h4 class='list-group-item-heading'>" + item.title + "</h4><p class='list-group-item-text'>"
+    //                             + item.user.nickname + "   |   " + item.createDate +
+    //                             "</p></a>" +
+    //                             "</div>");
+    //                     });
+    //                     //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+    //                     next(lis.join(''), page < res.pages); //假设总页数为 10
+    //                     $('[data-toggle="tooltip"]').tooltip()
+    //                 });
+    //             });
+    //         }
+    //     });
+    // });
+
+</script>
+</html>

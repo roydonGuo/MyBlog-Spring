@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace：命名空间，指向的就是对应接口的全限定名-->
+<mapper namespace="edu.zut.vlog.mapper.UsersMapper">
+
+    <!--注册用户-->
+    <insert id="register">
+        insert into users (pet_name, password)
+        values (#{pet_name}, #{password});
+    </insert>
+
+    <!--用户登录校验-->
+    <!--    <select id="loginCheck" resultType="users">-->
+    <!--        select *-->
+    <!--        from users-->
+    <!--        where pet_name = #{name}-->
+    <!--          and password = #{password}-->
+    <!--    </select>-->
+    <select id="isExist" resultType="java.lang.Boolean">
+        select *
+        from users
+        where pet_name = #{name};
+    </select>
+    <select id="getUserDetails" resultType="edu.zut.vlog.pojo.Users">
+        select *
+        from users
+        where id = #{userId}
+    </select>
+
+
+    <update id="updateUserByUserId">
+
+        update users
+        <set>
+            <if test="petName!=null">
+                pet_name=#{petName},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="imagePath!=null">
+                headportrait=#{imagePath},
+            </if>
+            <if test="userIntroduction!=null">
+                userintroduction=#{userIntroduction},
+            </if>
+        </set>
+        where id =#{userId}
+
+    </update>
+
+    <!--    <select id="getUserFavorite" resultType="edu.zut.vlog.pojo.Favorite">-->
+    <!--        select *-->
+    <!--        from favorite-->
+    <!--        where user_id = #{userId}-->
+    <!--    </select>-->
+
+
+    <select id="getUserFavorite" resultMap="userFavorite">
+        select *
+        from favorite
+                 join article on favorite.article_id = article.id
+                 join users on article.authorid = users.id
+        where user_id = #{userId}
+    </select>
+
+    <resultMap id="userFavorite" type="favorite">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="article_id" property="articleId"/>
+        <result column="create_time" property="createTime"/>
+        <association property="article" javaType="article">
+            <id column="id" property="id"/>
+            <result column="title" property="title"/>
+            <result column="content" property="content"/>
+        </association>
+        <association property="user" javaType="users">
+            <id column="id" property="id"/>
+            <result column="pet_name" property="petName"/>
+            <result column="headportrait" property="headPortrait"/>
+        </association>
+    </resultMap>
+
+
+</mapper>

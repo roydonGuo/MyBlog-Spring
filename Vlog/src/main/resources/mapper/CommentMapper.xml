@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace：命名空间，指向的就是对应接口的全限定名-->
+<mapper namespace="edu.zut.vlog.mapper.CommentMapper">
+    <insert id="addComment">
+        insert into comment (article_id,user_id,comment_content,create_time)
+        values (#{articleId},#{userId},#{content},#{createTime});
+    </insert>
+
+    <select id="getCommentsByArticleId" resultMap="allComment">
+        select *
+        from comment
+                 join users u on u.id = comment.user_id
+        where comment.article_id=#{articleId}
+    </select>
+    <resultMap id="allComment" type="comment">
+        <id column="comment_id" property="commentId"/>
+        <result column="article_id" property="articleId"/>
+        <result column="user_id" property="userId"/>
+        <result column="comment_content" property="content"/>
+        <result column="create_time" property="createTime"/>
+        <association property="user" javaType="users">
+            <id column="id" property="id"/>
+            <result column="pet_name" property="petName"/>
+            <result column="headportrait" property="headPortrait"/>
+        </association>
+
+    </resultMap>
+
+    <delete id="delUserFavorite">
+        delete
+        from favorite
+        where user_id=#{userId} and article_id=#{articleId}
+    </delete>
+    <delete id="delComment">
+        delete
+        from comment
+        where comment_id=#{id}
+    </delete>
+    <delete id="delCommentAllByArticleId">
+        delete
+        from comment
+        where article_id=#{articleId}
+    </delete>
+</mapper>

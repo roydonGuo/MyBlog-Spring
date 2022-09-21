@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${thisAlbum.getTitle()}"></title>
+    <!--    <link rel="stylesheet" href="../css/showimg.css">-->
+    <style>
+        img {
+            height: 300px;
+        }
+
+        ul {
+            display: block;
+        }
+
+        li {
+            display: inline-block;
+            float: left;
+            /* list-style: none; */
+        }
+    </style>
+</head>
+<body style="background-color: #0F192A">
+<div>
+    <p align="center" style="font-size: 35px;color: hotpink" th:text="${thisAlbum.getTitle()}"></p>
+    <p align="center" style="font-size: 15px;color: pink" th:text="${thisAlbum.getAlbumDescribe()}"></p>
+</div>
+<div class="container" th:each="img : ${imgList}">
+    <ul>
+        <li><img th:src="${img.getImgUrl()}" alt=""></li>
+    </ul>
+    <!--    <div class="btns">-->
+    <!--        <div class="btn">← 向左走</div>-->
+    <!--        <div class="btn">向右走 →</div>-->
+    <!--    </div>-->
+</div>
+
+
+</body>
+<!--<script src="../js/showimg.js"></script>-->
+<script>
+
+</script>
+</html>

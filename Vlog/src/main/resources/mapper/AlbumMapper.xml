@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace：命名空间，指向的就是对应接口的全限定名-->
+<mapper namespace="edu.zut.vlog.mapper.AlbumMapper">
+
+    <delete id="deleteImgs">
+        delete
+        from userimg
+        where albumid = #{albumId}
+    </delete>
+    <delete id="deleteAlbum">
+        delete
+        from album
+        where id = #{albumId}
+    </delete>
+
+    <!--    左表为基准进行全查询-->
+    <select id="queryAllAlbum" resultMap="userAlbum">
+        select *
+        from album
+                 left join users u on album.userid = u.id
+                 left join userimg ui on album.id = ui.albumid
+    </select>
+    <select id="queryAlbumByUserId" resultMap="userAlbum">
+        select *
+        from album
+                 left join users u on album.userid = u.id
+                 left join userimg ui on album.id = ui.albumid
+        where userid = #{userId}
+    </select>
+
+    <resultMap id="userAlbum" type="album">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="album_describe" property="albumDescribe"/>
+        <result column="coverimgurl" property="coverImgUrl"/>
+        <association property="user" javaType="users">
+            <id column="id" property="id"/>
+            <result column="pet_name" property="petName"/>
+        </association>
+        <collection property="userImgList" ofType="userImg">
+            <id column="id" property="id"/>
+            <result column="imgurl" property="imgUrl"/>
+        </collection>
+    </resultMap>
+    <!--    -->
+    <insert id="addAlbum">
+        insert into album
+            (title, album_describe, userid, coverimgurl)
+        values (#{title}, #{imgDescribe}, #{userId}, #{coverImgUrl});
+    </insert>
+
+    <select id="queryUserAlbumByUserId" resultType="edu.zut.vlog.pojo.Album">
+        select *
+        from album
+        where userid = #{userId}
+    </select>
+    <select id="queryImgByAlbumId" resultType="edu.zut.vlog.pojo.UserImg">
+        select *
+        from userimg
+        where albumid = #{albumId}
+    </select>
+    <select id="queryAlbumList" resultType="edu.zut.vlog.pojo.Album">
+        select *
+        from album;
+    </select>
+    <select id="countAllAlbum" resultType="java.lang.Integer">
+        select count(*)
+        from album;
+    </select>
+    <select id="queryAlbumAndUser" resultMap="AlbumAndUser">
+        select *
+        from album
+                 left join users u on album.userid = u.id
+    </select>
+    <select id="queryUserIdByAlbumId" resultType="java.lang.Integer">
+        select userid
+        from album
+        where id = #{albumId}
+    </select>
+    <select id="queryImgUrl" resultType="java.lang.String">
+        select imgurl
+        from userimg
+        where id = #{id}
+    </select>
+    <select id="getAlbumCoverge" resultType="java.lang.String">
+        select coverimgurl
+        from album
+        where id = #{albumId}
+    </select>
+    <select id="queryImgsUrl" resultType="java.lang.String">
+        select imgurl
+        from userimg
+        where albumid = #{albumId}
+    </select>
+    <select id="queryTitleById" resultType="album">
+        select *
+        from album
+        where id = #{albunId}
+    </select>
+    <resultMap id="AlbumAndUser" type="album">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="album_describe" property="albumDescribe"/>
+        <result column="coverimgurl" property="coverImgUrl"/>
+        <association property="user" javaType="users">
+            <id column="id" property="id"/>
+            <result column="pet_name" property="petName"/>
+        </association>
+        <collection property="userImgList" ofType="userImg">
+            <id column="id" property="id"/>
+            <result column="imgurl" property="imgUrl"/>
+        </collection>
+    </resultMap>
+
+</mapper>
