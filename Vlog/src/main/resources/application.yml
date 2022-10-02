@@ -7,10 +7,10 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/vlog?characterEncoding=utf-8&serverTimezone=PRC
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-  redis:
-    host: 192.168.52.128
-    port: 6379
-    password: qwer1234
+#  redis:
+#    host: 192.168.52.128
+#    port: 6379
+#    password: qwer1234
     lettuce:
       pool:
         max-active: 10
